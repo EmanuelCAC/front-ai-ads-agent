@@ -10,7 +10,10 @@ export default function Home() {
   const [message, setMessage] = useState("")
 
   const handleSubmit = async (e) => {
-    const response = await fetch("http://localhost:3000/ai", {
+    setChat([...chat, {message: message, id:1}])
+    setMessage("")
+    
+    const response = await fetch("http://localhost:3001/ai", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -19,13 +22,12 @@ export default function Home() {
     })
 
     const data = await response.json()
-    setChat([...chat,{message: message, id:1}, {message: data.response, id:2}])
-    setMessage("")
+    setChat(prevChat => [...prevChat, {message: data.response, id:2}])
   }
 
   useEffect(() => {
     const getMessage = async () => {
-      const response = await fetch("http://localhost:3000/welcome")
+      const response = await fetch("http://localhost:3001/welcome")
       const data = await response.json()
       setChat(data.response)
     }
@@ -39,7 +41,7 @@ export default function Home() {
       
       <div className="flex flex-col w-[50%] gap-4">
         {chat.map((item, i) => (
-          <div className={`flex ${item.id==1 ? "flex-row-reverse": "flex-row"} gap-2 relative`}>
+          <div key={i} className={`flex ${item.id==1 ? "flex-row-reverse": "flex-row"} gap-2 relative`}>
             {item.id==2 ? (
               <div className="rounded-full bg-zinc-700 aspect-square w-[46px] h-[46px] p-2 absolute -left-13 -bottom-5">
                 <LuBot size={30}/>
