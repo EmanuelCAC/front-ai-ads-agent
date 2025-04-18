@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { LuBot } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa";
+import { useAuthStore } from "@/stores/authStore.js";
 
 export default function Home() {
   
   const [chat, setChat] = useState([])
   const [message, setMessage] = useState("")
+  const { changeUserName } = useAuthStore()
 
   const handleSubmit = async (e) => {
     setChat([...chat, {message: message, id:1}])
@@ -61,6 +63,7 @@ export default function Home() {
       <div className="flex fixed bottom-10 bg-slate-900 w-[50%] items-center p-3 rounded-2xl gap-3">
         <textarea value={message} onChange={(event) => setMessage(event.target.value)} className="bg-slate-800 rounded-xl p-2 w-full resize-none focus-visible:outline-none"></textarea>
         <button className="rounded-xl bg-slate-800 aspect-square p-2 cursor-pointer hover:bg-slate-700 active:bg-slate-600" onClick={handleSubmit}>Enviar</button>
+        {/* <button className="rounded-xl bg-slate-800 aspect-square cursor-pointer hover:bg-slate-700 active:bg-slate-600" onClick={() => {changeUserName('Mudado')}}>Mudar userName</button> */}
       </div>
     </div>
   );
